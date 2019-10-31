@@ -64,6 +64,7 @@ public class Main {
         }
         System.out.println("$" + cost + "0");
         total+=cost;
+        cost = 0;
     }
 
     private static void printReceipt(){
@@ -125,7 +126,7 @@ public class Main {
             case "medium salsa": allCounts[11]++; break;
             case "hot salsa": allCounts[12]++; break;
             case "all salsa": allCounts[10]++; allCounts[11]++; allCounts[12]++; break;
-            case "fajitas": allCounts[13]++; break;
+            case "fajita veggies": allCounts[13]++; break;
             case "lettuce": allCounts[14]++; break;
             case "all veggies": allCounts[14]++; allCounts[13]++; break;
             case "cheese": allCounts[15]++; break;
