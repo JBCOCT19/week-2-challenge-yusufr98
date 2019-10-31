@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Main {
     private static String[] rice = {"white rice", "brown rice", "no rice", "all rice"};
-    private static String[] meat = {"chicken", "steak", "carnitas", "chorizo", "sofritas", "veggies", "no meat"};
+    private static String[] meat = {"chicken", "steak", "carnitas", "chorizo", "sofritas", "veggies", "no meat", "all meat"};
     private static String[] beans = {"pinto beans", "black beans", "no beans"};
     private static String[] salsa = {"mild salsa", "medium salsa", "hot salsa", "no salsa", "all salsa"};
     private static String[] veggies = {"lettuce", "fajita veggies", "no veggies", "all veggies"};
@@ -25,11 +25,7 @@ public class Main {
         for (int i = 1; i <= 25; i++) {
             order(i);
         }
-        System.out.print("This order has ");
-        for (int i = 0; i < allCounts.length; i++) {
-            System.out.print(allCounts[i] + " " + allStrings[i] + ", ");
-        }
-        System.out.println("and the sum is " + total + "0");
+        printReceipt();
     }
 
     private static void order(int n) {
@@ -40,7 +36,18 @@ public class Main {
             String s = strings[r.nextInt(strings.length)];
             order.add(s);
             if (!s.contains("no")) {
-                cost += .50;
+                if(s.equalsIgnoreCase("all rice") || s.equalsIgnoreCase("all veggies")){
+                    cost += 1.00;
+                }
+                else if(s.equalsIgnoreCase("all salsa")){
+                    cost += 1.50;
+                }
+                else if(s.equalsIgnoreCase("all meat")){
+                    cost += 3.00;
+                }
+                else {
+                    cost += .50;
+                }
             }
         }
         for (int i = 0; i < options.length; i++) {
@@ -50,12 +57,54 @@ public class Main {
                 cost += .50;
             }
         }
+        int charCount = 0;
         for (String s : order) {
             count(s);
             System.out.print(s + ", ");
         }
         System.out.println("$" + cost + "0");
         total+=cost;
+    }
+
+    private static void printReceipt(){
+        System.out.print("This order has ");
+        int charCount = 15;
+        for (int i = 0; i < allCounts.length; i++) {
+            if(charCount+(allCounts[i]+"").length()>=50){
+                System.out.println();
+                charCount = 0;
+            }
+            charCount+=(allCounts[i] + " ").length();
+            System.out.print(allCounts[i] + " ");
+            String[] array = allStrings[i].split(" ");
+            for(String s: array) {
+                if (charCount + s.length()+1 >= 50) {
+                    System.out.println();
+                    charCount = 0;
+                }
+                charCount += (s).length()+2;
+                if(s.equalsIgnoreCase(array[array.length-1])){
+                    System.out.print(s);
+                }
+                else {
+                    System.out.print(s + " ");
+                }
+            }
+            System.out.print(", ");
+        }
+        String[] last = {"and ", "the ", "sum ", "is "};
+        for(String s: last){
+            if(charCount+s.length() >= 50){
+                System.out.println();
+                charCount = 0;
+            }
+            System.out.print(s);
+            charCount += s.length();
+        }
+        if(charCount+7 >= 50){
+            System.out.println();
+        }
+        System.out.println(total +"0");
     }
 
     private static void count(String s) {
@@ -69,6 +118,7 @@ public class Main {
             case "chorizo": allCounts[5]++; break;
             case "sofritas": allCounts[6]++; break;
             case "veggies": allCounts[7]++; break;
+            case "all meat": allCounts[2]++; allCounts[3]++; allCounts[4]++; allCounts[5]++; allCounts[6]++; allCounts[7]++; break;
             case "black beans": allCounts[8]++; break;
             case "pinto beans": allCounts[9]++; break;
             case "mild salsa": allCounts[10]++; break;
